@@ -1,8 +1,3 @@
-Absolutely! Here’s a **comprehensive beginner-friendly README.md** for your repo, covering GCP setup, IAM/service accounts, project structure, Terraform concepts, and running the workflow.
-Feel free to copy-paste and customize as you need.
-
----
-
 # 🚀 GCP Terraform Infrastructure Monorepo
 
 This repository contains a **beginner-friendly, step-by-step guide** and code to deploy Google Cloud resources using [Terraform](https://www.terraform.io/) and automate deployment with [GitHub Actions](https://docs.github.com/en/actions).
