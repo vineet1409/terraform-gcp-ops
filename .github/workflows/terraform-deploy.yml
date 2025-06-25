@@ -37,9 +37,9 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform plan
+        run: terraform plan -var="gcp_project_id=${{ secrets.GCP_PROJECT_ID }}"
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var="gcp_project_id=${{ secrets.GCP_PROJECT_ID }}"
