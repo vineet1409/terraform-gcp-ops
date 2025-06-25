@@ -1,12 +1,31 @@
-
 name: Terraform Deploy
-on: [push]
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: gcp-dev
     steps:
-      - uses: actions/checkout@v3
-      - name: Terraform apply
-        run: |
-          terraform init
-          terraform apply -auto-approve
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.5  # or any desired stable version
+
+      - name: Set up Google Cloud credentials
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Terraform Init
+        working-directory: envs/dev
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: envs/dev
+        run: terraform apply -auto-approve
