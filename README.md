@@ -1,6 +1,7 @@
-# 🚀 GCP Terraform Infrastructure Monorepo
+# 🚀 GCP Terraform Infrastructure via CI/CD using GitHub Actions
 
-This repository contains a **beginner-friendly, step-by-step guide** and code to deploy Google Cloud resources using [Terraform](https://www.terraform.io/) and automate deployment with [GitHub Actions](https://docs.github.com/en/actions).
+This repository contains a **step-by-step guide** and code to deploy Google Cloud resources using [Terraform](https://www.terraform.io/) and automate deployment with [GitHub Actions](https://docs.github.com/en/actions).
+
 You’ll learn to:
 
 * Structure Terraform code for real cloud projects
@@ -28,7 +29,7 @@ Using this repo and guide, you will:
 
 ## 🧱 Project Structure
 
-```plaintext
+```
 gcp-infra-monorepo/
 ├── modules/                    # Individual service modules for reusability
 │   ├── gcs/
@@ -213,4 +214,129 @@ This repo includes a workflow (`.github/workflows/terraform-deploy.yml`) that:
 
 ---
 
+# 📖 Appendix: Terraform Core Concepts Explained
+
+Terraform is an **infrastructure as code (IaC)** tool by HashiCorp. It lets you describe your cloud infrastructure in code, and then create, change, and delete those resources safely and repeatably.
+
+### 1. **Providers**
+
+A **provider** is a plugin that lets Terraform talk to a specific platform or service (like Google Cloud, AWS, Azure, GitHub, etc).
+
+```hcl
+provider "google" {
+  project = var.gcp_project_id
+  region  = var.default_region
+}
+```
+
+### 2. **Resources**
+
+A **resource** is any infrastructure object you want to manage—VMs, Storage buckets, networks, etc.
+
+```hcl
+resource "google_storage_bucket" "my_bucket" {
+  name     = "my-terraform-demo-bucket"
+  location = "US"
+}
+```
+
+### 3. **Data Sources**
+
+A **data source** lets you **read** information from outside Terraform.
+
+```hcl
+data "google_client_openid_userinfo" "me" {}
+```
+
+### 4. **Input Variables**
+
+Variables make your Terraform code flexible and reusable.
+
+**Declare:**
+
+```hcl
+variable "gcp_project_id" {
+  description = "Your GCP Project ID"
+  type        = string
+}
+```
+
+**Use:**
+
+```hcl
+provider "google" {
+  project = var.gcp_project_id
+}
+```
+
+### 5. **Output Values**
+
+Outputs show info after applying your infrastructure.
+
+```hcl
+output "bucket_url" {
+  value = google_storage_bucket.my_bucket.url
+}
+```
+
+### 6. **Modules**
+
+A module is a reusable set of Terraform files.
+
+**Use:**
+
+```hcl
+module "my_gcs_bucket" {
+  source      = "../modules/gcs"
+  bucket_name = "my-new-bucket"
+}
+```
+
+### 7. **State**
+
+Terraform keeps track of what it has built using a **state file** (`terraform.tfstate`).
+
+* Local: stored in your folder
+* Remote: in a bucket, for teams
+
+### 8. **Plan and Apply**
+
+* `terraform plan` — shows what changes will be made
+* `terraform apply` — actually makes the changes
+* `terraform destroy` — tears down what you’ve built
+
+### 9. **Backend**
+
+Where Terraform’s state is stored.
+
+```hcl
+terraform {
+  backend "gcs" {
+    bucket = "my-tfstate-bucket"
+    prefix = "terraform/state/dev"
+  }
+}
+```
+
+### 10. **Sensitive Data & Secrets**
+
+* Never put secrets in code!
+* Pass them via GitHub Secrets (as in this repo).
+
+### 11. **Best Practices**
+
+* Use modules and version control
+* Store state remotely
+* Use CI/CD for safe, automatic applies
+
+### 12. **Terraform CLI Basics**
+
+* `terraform init`
+* `terraform plan`
+* `terraform apply`
+* `terraform destroy`
+
+---
+
 Happy learning and deploying on GCP with Terraform! 🚀
+
