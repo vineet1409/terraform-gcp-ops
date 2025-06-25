@@ -7,8 +7,8 @@ resource "google_workbench_instance" "workbench" {
     disable_public_ip = false
 
     boot_disk {
-      disk_type   = "PD_STANDARD"  # <-- UPPERCASE!
-      disk_size_gb = 100
+      disk_type   = "PD_STANDARD"
+      disk_size_gb = 200        # <-- set to at least 150
     }
 
     metadata = {
