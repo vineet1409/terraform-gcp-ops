@@ -7,7 +7,7 @@ resource "google_workbench_instance" "workbench" {
     disable_public_ip = false
 
     boot_disk {
-      disk_type = "pd-standard"
+      disk_type   = "PD_STANDARD"  # <-- UPPERCASE!
       disk_size_gb = 100
     }
 
@@ -15,5 +15,4 @@ resource "google_workbench_instance" "workbench" {
       "proxy-mode" = "service_account"
     }
   }
-  # Set the VM image as you wish, or leave for default
 }
